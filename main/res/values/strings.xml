@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">My Application</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+
+    <string name="dummy_text_long">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque mattis eros in</string>
+    <string name="dummy_text_short">Dummy text</string>
+
+    <string name="new_task">New</string>
+
+    <string name="confirm">Confirm</string>
+
+    <string name="task_title">Task Title</string>
+    <string name="task_content">Task Content</string>
+    <string name="task_expire">Due date</string>
+
+</resources>
