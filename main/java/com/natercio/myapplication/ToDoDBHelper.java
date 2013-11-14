@@ -17,23 +17,22 @@ public class ToDoDBHelper extends SQLiteOpenHelper {
 
     public static final int DATABESE_VERSION = 1;
 
-    public ToDoDBHelper(Context context, SQLiteDatabase.CursorFactory factory) {
-        super(context, DATABASE_NAME, factory, DATABESE_VERSION);
+    public ToDoDBHelper(Context context) {
+        super(context, DATABASE_NAME, null, DATABESE_VERSION);
     }
 
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
-        SQLiteDatabase db = getWritableDatabase();
-
-        db.execSQL("CREATE TABLE task (id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT, content TEXT, expiration TEXT)");
+        sqLiteDatabase.execSQL("CREATE TABLE task (id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT, content TEXT, expiration TEXT)");
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i2) {
-
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS task");
+        onCreate(sqLiteDatabase);
     }
 
-    public ArrayList<ToDoTask> getTasks() {
+    public ArrayList<ToDoTask> getAllTasks() {
         SQLiteDatabase db = getReadableDatabase();
 
         ArrayList<ToDoTask> tasks = new ArrayList<ToDoTask>();
@@ -52,13 +51,26 @@ public class ToDoDBHelper extends SQLiteOpenHelper {
         return tasks;
     }
 
+    public void updateTask(ToDoTask task) {
+        SQLiteDatabase db = getWritableDatabase();
+        ContentValues values = new ContentValues();
+
+        if (db != null) {
+            values.put("expiration", task.getDueDate());
+            values.put("content", task.getContent());
+            values.put("title", task.getTitle());
+
+            db.update("task", values, "id = ?", new String[] {String.valueOf(task.getId())});
+        }
+    }
+
     public long putTask(ToDoTask task) {
         SQLiteDatabase db = getWritableDatabase();
         ContentValues values = new ContentValues();
 
         values.put("title", task.getTitle());
-        values.put("expiration", task.getDueDate());
         values.put("content", task.getContent());
+        values.put("expiration", task.getDueDate());
 
         return db.insert("task", "null", values);
     }
